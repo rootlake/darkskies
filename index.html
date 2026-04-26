@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Skies of California — Thank You, Class of 1967</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold: #c8a96e;
+  --gold-faint: rgba(200,169,110,0.28);
+  --text: rgba(218,228,244,0.92);
+  --text-dim: rgba(178,198,224,0.55);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #3d1208;
+  color: var(--text);
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  line-height: 1.75;
+}
+
+/* ── STAR CANVAS ── */
+#starCanvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── HERO SKY ── */
+#heroSky {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 38vh;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+#heroSky svg { width: 100%; height: 100%; display: block; }
+
+/* ── HORIZON GLOW ── */
+#horizonGlow {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 320px;
+  background: linear-gradient(to bottom, rgba(80,20,6,0.18) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.4s;
+}
+
+/* ── SIDE NAV ── */
+#sidenav {
+  position: fixed;
+  left: 28px; top: 50%;
+  transform: translateY(-50%);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+}
+
+.navdot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(200,169,110,0.18);
+  border: 1px solid rgba(200,169,110,0.38);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  text-decoration: none;
+  display: block;
+  flex-shrink: 0;
+}
+.navdot.active {
+  background: var(--gold);
+  box-shadow: 0 0 10px rgba(200,169,110,0.65);
+  transform: scale(1.4);
+}
+.navdot:not(.active):hover {
+  background: rgba(200,169,110,0.5);
+  transform: scale(1.2);
+}
+.navdot::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 16px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px; font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+  font-family: 'Roboto', sans-serif;
+}
+.navdot:hover::after { opacity: 1; }
+
+/* ── SECTIONS ── */
+section {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 100px 80px 100px 80px;
+}
+
+.section-inner {
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: 0.15s; }
+.d2 { transition-delay: 0.30s; }
+.d3 { transition-delay: 0.45s; }
+
+/* ── TYPE ── */
+.eyebrow {
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold); display: block; margin-bottom: 14px;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 400; line-height: 1.12;
+  margin-bottom: 26px; letter-spacing: -0.01em;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+  font-weight: 400; line-height: 1.2;
+  margin-bottom: 18px;
+}
+p {
+  font-size: 16px; line-height: 1.78;
+  color: var(--text); margin-bottom: 18px;
+  font-weight: 300;
+}
+p.lead { font-size: 19px; line-height: 1.65; }
+.dim { color: var(--text-dim); }
+
+.rule {
+  border: none;
+  border-top: 1px solid rgba(200,169,110,0.14);
+  margin: 38px 0;
+}
+
+/* ── POLAROID ── */
+.polaroid {
+  display: inline-block;
+  background: #ede9e1;
+  padding: 10px 10px 38px;
+  box-shadow: 0 10px 44px rgba(0,0,0,0.78), 0 2px 10px rgba(0,0,0,0.38);
+  transition: box-shadow 0.35s ease;
+  user-select: none;
+  position: relative;
+  cursor: default;
+  vertical-align: bottom;
+  zoom: 1.18;
+}
+.polaroid img {
+  display: block;
+  filter: brightness(0.03) saturate(0);
+  transition: filter 5s cubic-bezier(0.10, 0, 0.28, 1);
+  will-change: filter;
+}
+.polaroid.revealed img { filter: brightness(1) saturate(1); }
+
+/* Dynamic glare overlay */
+.polaroid::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(
+    ellipse at var(--gx, 50%) var(--gy, 30%),
+    rgba(255,255,255,0.24) 0%,
+    rgba(255,255,255,0.07) 32%,
+    transparent 62%
+  );
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.22s;
+}
+.polaroid:hover::after { opacity: 1; }
+
+.p-cap {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  color: #3a3530;
+  padding: 0 8px; text-align: center;
+  line-height: 1.3;
+}
+
+.photo-cluster {
+  display: flex;
+  gap: 22px;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+/* ── ROUTE MAP ── */
+.route-wrap { display: flex; justify-content: center; margin: 30px 0; }
+
+#routePath {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  transition: stroke-dashoffset 2.2s cubic-bezier(0.4,0,0.2,1);
+}
+#routePath.drawn { stroke-dashoffset: 0; }
+
+/* ── STOP LIST ── */
+.stops-list { list-style: none; display: flex; flex-direction: column; gap: 18px; margin: 26px 0; }
+.stop-item {
+  display: flex; gap: 16px; align-items: flex-start;
+  opacity: 0; transform: translateX(-14px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.stop-item.show { opacity: 1; transform: translateX(0); }
+.stop-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 5px;
+}
+.stop-bortle { font-size: 10px; font-weight: 500; letter-spacing: 0.13em; color: var(--gold); text-transform: uppercase; margin-bottom: 2px; }
+.stop-name { font-size: 16px; font-weight: 400; margin-bottom: 4px; }
+.stop-desc { font-size: 14px; font-weight: 300; color: var(--text-dim); line-height: 1.62; }
+
+/* ── BORTLE BAR ── */
+.bortle-scale {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  margin: 28px 0 8px;
+  height: 72px;
+}
+.b-seg {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  cursor: default; transition: transform 0.2s;
+}
+.b-seg:hover { transform: translateY(-4px); }
+.b-bar { width: 100%; border-radius: 2px 2px 0 0; height: 52px; }
+.b-num { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.68); }
+.b-label { font-size: 7px; color: rgba(255,255,255,0.35); text-align: center; line-height: 1.3; }
+.b-seg.pin .b-bar { box-shadow: 0 0 14px 2px var(--pc); opacity: 1 !important; }
+
+/* ── EXPEDITION STOPS ── */
+.exp-stops {
+  border-left: 1px solid rgba(200,169,110,0.14);
+  padding-left: 26px;
+  margin: 28px 0;
+  display: flex; flex-direction: column; gap: 0;
+}
+.exp-stop {
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+  opacity: 0; transform: translateX(-10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.exp-stop.show { opacity: 1; transform: translateX(0); }
+.exp-stop::before {
+  content: '';
+  position: absolute;
+  left: -30px; top: 22px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--sc, var(--gold));
+  box-shadow: 0 0 10px var(--sc, var(--gold));
+}
+.exp-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; flex-wrap: wrap; }
+.exp-badge {
+  font-size: 9px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+  background: rgba(200,169,110,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(200,169,110,0.2);
+  white-space: nowrap;
+}
+.exp-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 400;
+}
+.exp-desc { font-size: 14px; font-weight: 300; color: var(--text-dim); line-height: 1.65; }
+
+/* ── GEAR ── */
+.gear-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px; margin: 24px 0;
+}
+.gear-card {
+  border: 1px solid rgba(200,169,110,0.14);
+  padding: 15px 17px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 2px;
+}
+.gear-title { font-size: 11px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.gear-card p { font-size: 13px; line-height: 1.62; margin-bottom: 0; color: var(--text-dim); }
+
+/* ── GALLERY ── */
+#gallery { min-height: auto; padding: 80px 40px; }
+.gallery-scatter {
+  display: flex; flex-wrap: wrap;
+  gap: 28px; justify-content: center;
+  margin: 36px 0;
+}
+
+/* ── CLOSING ── */
+#closing {
+  min-height: 90vh;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+}
+#closing::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(2,3,10,0.70); z-index: 0;
+}
+#closing .section-inner { position: relative; z-index: 1; }
+
+.closing-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 400; font-style: italic;
+  line-height: 1.5;
+  color: rgba(200,169,110,0.92);
+  max-width: 640px; margin: 0 auto 30px;
+}
+.closing-sub {
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.crest {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 50px; height: 50px;
+  border: 1px solid rgba(200,169,110,0.25);
+  border-radius: 50%;
+  margin: 0 auto 20px; display: block; text-align: center;
+  line-height: 50px;
+}
+.crest span {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: rgba(200,169,110,0.35);
+}
+
+@media (max-width: 768px) {
+  section { padding: 70px 22px 70px 50px; }
+  #sidenav { left: 13px; }
+  .gear-grid { grid-template-columns: 1fr; }
+  #gallery { padding: 60px 18px; }
+}
+
+/* ── LIGHTBOX ── */
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: background 0.3s ease, opacity 0.3s ease;
+  cursor: zoom-out;
+}
+#lightbox.open {
+  background: rgba(0,0,0,0.82);
+  opacity: 1; pointer-events: all;
+}
+#lightbox-inner {
+  transform: scale(0.88);
+  transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+  cursor: default;
+}
+#lightbox.open #lightbox-inner { transform: scale(1); }
+#lightbox-inner .polaroid { cursor: default; zoom: 1; }
+#lightbox-inner .polaroid img {
+  filter: brightness(1) saturate(1) !important;
+  transition: none !important;
+}
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+<div id="horizonGlow"></div>
+
+<!-- Mountain silhouette hero sky -->
+<div id="heroSky">
+  <svg viewBox="0 0 1440 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#8ba3b4"/>
+        <stop offset="48%" stop-color="#c4895c"/>
+        <stop offset="72%" stop-color="#7a2e14"/>
+        <stop offset="100%" stop-color="#3d1208"/>
+      </linearGradient>
+    </defs>
+    <!-- Sky -->
+    <rect width="1440" height="480" fill="url(#skyGrad)"/>
+    <!-- Distant ridgeline -->
+    <path d="M 0,480 L 0,308 C 180,296 340,282 500,272 C 610,265 700,260 800,255 C 890,250 980,254 1100,261 C 1220,268 1350,270 1440,268 L 1440,480 Z" fill="rgba(28,10,4,0.72)"/>
+    <!-- Mid ridge with prominent peak -->
+    <path d="M 0,480 L 0,372 C 90,364 170,352 255,338 C 335,325 372,336 418,350 C 458,362 478,344 512,322 C 546,300 572,278 602,258 C 622,244 646,228 670,213 C 688,202 705,194 722,188 C 736,183 750,189 766,201 C 782,213 796,225 818,220 C 840,215 856,205 878,197 C 900,189 922,197 950,213 C 976,228 998,242 1038,246 C 1078,250 1122,242 1178,238 C 1228,234 1298,242 1378,246 L 1440,244 L 1440,480 Z" fill="#1e0904"/>
+    <!-- Foreground layer -->
+    <path d="M 0,480 L 0,415 C 65,408 138,398 218,385 C 290,373 330,384 378,397 C 414,407 436,390 470,372 C 500,355 524,338 550,322 C 572,308 592,296 618,286 C 638,278 654,274 672,272 C 682,271 690,274 698,283 C 706,292 712,300 728,306 C 744,312 758,306 776,298 C 790,291 804,286 824,291 C 844,296 862,308 892,315 C 920,321 948,316 988,310 C 1024,305 1074,299 1134,302 C 1188,305 1252,313 1334,318 C 1388,321 1426,316 1440,314 L 1440,480 Z" fill="#0e0401"/>
+  </svg>
+</div>
+
+<nav id="sidenav">
+  <a class="navdot active" href="#welcome" data-label="Thank You"></a>
+  <a class="navdot" href="#scouting" data-label="The Scout"></a>
+  <a class="navdot" href="#bortle" data-label="Bortle Scale"></a>
+  <a class="navdot" href="#expedition" data-label="2027 Expedition"></a>
+  <a class="navdot" href="#gear" data-label="The Gear"></a>
+  <a class="navdot" href="#gallery" data-label="From the Road"></a>
+  <a class="navdot" href="#closing" data-label="Fin"></a>
+</nav>
+
+<!-- ═══════════ §1 WELCOME ═══════════ -->
+<section id="welcome">
+  <div class="section-inner" style="max-width:960px; display:flex; gap:52px; align-items:flex-end;">
+
+    <!-- Text column -->
+    <div class="reveal" style="flex:1; min-width:0; padding-bottom:8px;">
+      <span class="eyebrow" style="color:rgba(220,228,244,0.75);">Class of 1967 Faculty Impact Award</span>
+      <h1>Dark Skies<br>of California</h1>
+      <p style="font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:400;">Scouting Trip 2026</p>
+      <p style="font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;font-weight:400;opacity:0.6;">Documenting the Bortle Light Gradient</p>
+      <p class="lead">This spring, your generosity sent me west — from the most light-polluted night skies of Las Vegas through Death Valley and into the Eastern Sierra, scouting what will become Pomfret’s most ambitious astronomy expedition since Chile 2012.</p>
+      <p class="dim">What follows is a report from the field. The skies are as dark as the maps promised — in some places, darker. When students follow this route in March 2027, they’ll see something 80% of Americans have never seen from where they live.</p>
+    </div>
+
+    <!-- Large polaroid photo -->
+    <div class="reveal d1" style="flex:0 0 auto;">
+      <div class="polaroid" data-rot="2" style="width:370px;">
+        <img src="uploads/Plane.jpeg" alt="City lights below, Las Vegas at night" style="width:350px;height:420px;object-fit:cover;object-position:center 38%;display:block;">
+        <!-- Silver marker annotation -->
+        <div style="position:absolute;top:42px;left:14px;z-index:4;pointer-events:none;transform:rotate(-8deg);transform-origin:left top;">
+          <span style="font-family:’Dancing Script’,cursive;font-size:23px;font-weight:700;color:rgba(200,212,228,0.92);text-shadow:0 1px 4px rgba(0,0,0,0.5),0 0 10px rgba(180,200,225,0.25);line-height:1;">Aurora from the plane!</span>
+        </div>
+        <div class="p-cap">Inbound &nbsp;·&nbsp; City Glow Below &nbsp;·&nbsp; Bortle 9</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ §2 SCOUTING ═══════════ -->
+<section id="scouting">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">The Scouting Trip · March 2026</span>
+      <h2 style="font-size:clamp(1.3rem, 2.4vw, 2rem);">Las Vegas → Death Valley → Alabama Hills</h2>
+      <p>Three sites, four nights — evaluating each location for sky darkness, photography potential, safe access, and the kind of visual drama that makes a place worth the drive.</p>
+      <p class="dim">Here's what we found.</p>
+    </div>
+
+    <!-- Route map -->
+    <div class="route-wrap reveal d1">
+      <svg id="routeSvg" width="420" height="260" viewBox="0 0 420 260" fill="none">
+        <defs>
+          <radialGradient id="lvGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,185,80,0.45)"/>
+            <stop offset="60%" stop-color="rgba(255,140,40,0.12)"/>
+            <stop offset="100%" stop-color="rgba(255,120,20,0)"/>
+          </radialGradient>
+        </defs>
+
+        <!-- California -->
+        <path d="M 18,12 L 248,12 L 255,55 L 260,92 L 248,145 L 235,196 L 220,248 L 18,248 Z"
+              stroke="rgba(200,169,110,0.14)" stroke-width="1" fill="none"/>
+
+        <!-- Nevada -->
+        <path d="M 248,12 L 408,12 L 408,248 L 268,248 L 248,222 L 235,196 L 248,145 L 260,92 L 255,55 L 248,12 Z"
+              stroke="rgba(200,169,110,0.14)" stroke-width="1" fill="none"/>
+
+        <!-- Shared CA/NV border — single clean line -->
+        <path d="M 248,12 L 255,55 L 260,92 L 248,145 L 235,196 L 220,248"
+              stroke="rgba(200,169,110,0.32)" stroke-width="1.2" fill="none"/>
+
+        <!-- State labels near top -->
+        <text x="98" y="36" fill="rgba(200,169,110,0.12)" font-family="Roboto,sans-serif" font-size="24" font-weight="300" letter-spacing="5">CA</text>
+        <text x="308" y="36" fill="rgba(200,169,110,0.12)" font-family="Roboto,sans-serif" font-size="20" font-weight="300" letter-spacing="4">NV</text>
+
+        <!-- Las Vegas glow -->
+        <ellipse cx="318" cy="148" rx="50" ry="38" fill="url(#lvGlow)"/>
+
+        <!-- Route: LV → DV (high) → AH -->
+        <path id="routePath" d="M 318,148 C 288,135 252,108 202,84 C 172,68 140,88 108,118"
+              stroke="#c8a96e" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.7"/>
+
+        <!-- Las Vegas -->
+        <circle cx="318" cy="148" r="5" fill="#e07040" opacity="0.95"/>
+        <circle cx="318" cy="148" r="14" fill="rgba(224,112,64,0.13)"/>
+        <text x="318" y="170" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="10" font-weight="400" letter-spacing="1.2" text-anchor="middle">LAS VEGAS</text>
+        <text x="318" y="181" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 9 · Calibration</text>
+
+        <!-- Death Valley — higher -->
+        <circle cx="202" cy="84" r="5" fill="#5585d8" opacity="0.95"/>
+        <circle cx="202" cy="84" r="14" fill="rgba(85,133,216,0.12)"/>
+        <text x="202" y="62" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="10" font-weight="400" letter-spacing="1.2" text-anchor="middle">DEATH VALLEY</text>
+        <text x="202" y="51" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 1–2 · ✓ Confirmed</text>
+
+        <!-- Alabama Hills -->
+        <circle cx="108" cy="118" r="5" fill="#9fc6ee" opacity="0.95"/>
+        <circle cx="108" cy="118" r="14" fill="rgba(159,198,238,0.12)"/>
+        <text x="108" y="146" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="10" font-weight="400" letter-spacing="1.2" text-anchor="middle">ALABAMA HILLS</text>
+        <text x="108" y="157" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 2–3 · ✓ Confirmed</text>
+
+        <!-- Distance labels -->
+        <text x="265" y="112" fill="rgba(200,169,110,0.28)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">~2.5 hrs</text>
+        <text x="152" y="92" fill="rgba(200,169,110,0.28)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">~2 hrs</text>
+
+        <text x="392" y="238" fill="rgba(200,169,110,0.18)" font-family="Roboto,sans-serif" font-size="9" font-weight="300">N ↑</text>
+      </svg>
+    </div>
+
+    <ul class="stops-list">
+      <li class="stop-item" style="transition-delay:0.05s">
+        <div class="stop-dot" style="background:#e07040;box-shadow:0 0 8px rgba(224,112,64,0.6);"></div>
+        <div>
+          <div class="stop-bortle">Bortle 9</div>
+          <div class="stop-name">Las Vegas</div>
+          <div class="stop-desc">The starting point. You can't find the dark without standing in the light first — and Las Vegas is the brightest city in the American West. We calibrate here so the difference ahead is something we can measure, not just feel.</div>
+        </div>
+      </li>
+      <li class="stop-item" style="transition-delay:0.2s">
+        <div class="stop-dot" style="background:#5585d8;box-shadow:0 0 8px rgba(85,133,216,0.6);"></div>
+        <div>
+          <div class="stop-bortle">Bortle 1–2</div>
+          <div class="stop-name">Death Valley National Park</div>
+          <div class="stop-desc">We drove in after midnight and the sky hit us before we stepped out of the car. The Milky Way was bright enough to cast faint shadows. Mesquite Flat, Badwater (−282 ft below sea level), Stovepipe Wells: all scouted, all confirmed. New moon night: March 8, 2027.</div>
+        </div>
+      </li>
+      <li class="stop-item" style="transition-delay:0.35s">
+        <div class="stop-dot" style="background:#9fc6ee;box-shadow:0 0 8px rgba(159,198,238,0.6);"></div>
+        <div>
+          <div class="stop-bortle">Bortle 2–3</div>
+          <div class="stop-name">Alabama Hills · Lone Pine</div>
+          <div class="stop-desc">Mobius Arch, the Sierra Nevada behind it, and the Milky Way rising above both. It's almost absurdly photogenic. Two observing nights planned here — this is where we expect the strongest student images.</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="photo-cluster reveal d2">
+      <div class="polaroid" data-rot="-3" style="width:188px;">
+        <img src="uploads/IMG_5403.JPG" alt="Mesquite Flat Dunes at dusk" style="width:168px;height:168px;object-fit:cover;object-position:center 20%;">
+        <div class="p-cap">Mesquite Flat Dunes · Bortle 2</div>
+      </div>
+      <div class="polaroid" data-rot="2.5" style="width:188px;">
+        <img src="uploads/pasted-1777231781688-0.png" alt="Death Valley sign at night under stars" style="width:168px;height:168px;object-fit:cover;object-position:center 62%;">
+        <div style="position:absolute;top:22px;left:0;right:0;text-align:center;z-index:4;pointer-events:none;transform:rotate(-5deg);transform-origin:center top;">
+          <span style="font-family:'Dancing Script',cursive;font-size:13px;font-weight:700;color:rgba(200,212,228,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.6);line-height:1;">The darkest drive of my life!</span>
+        </div>
+        <div class="p-cap">Death Valley N.P. · Arrival Night</div>
+      </div>
+      <div class="polaroid" data-rot="-1.5" style="width:188px;">
+        <img src="uploads/IMG_5541.jpg" alt="Zabriskie Point last light" style="width:168px;height:168px;object-fit:cover;object-position:center 75%;">
+        <div class="p-cap">Zabriskie Point · Last Light</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ §3 BORTLE ═══════════ -->
+<section id="bortle">
+  <div class="section-inner" style="max-width:860px;">
+    <div class="reveal">
+      <span class="eyebrow">The Science</span>
+      <h2>The Bortle Scale</h2>
+      <p>This Experiential Education opportunity is built around a deceptively simple idea: the Bortle Scale — a nine-point measure of night sky brightness, from the washed-out glow above a city center to a sky so dark the Milky Way casts a visible shadow. Every stop on this expedition is a measurement. Every night is a data point.</p>
+    </div>
+
+    <!-- Bortle color bar -->
+    <div class="bortle-scale reveal d1">
+      <div class="b-seg pin" style="--pc:#d05828">
+        <div class="b-bar" style="background:#d05828;"></div>
+        <span class="b-num">9</span><span class="b-label">Inner City</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#b05028; opacity:0.7;"></div>
+        <span class="b-num">8</span><span class="b-label">City Sky</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#9050a0; opacity:0.7;"></div>
+        <span class="b-num">7</span><span class="b-label">Suburban</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#7060c0; opacity:0.7;"></div>
+        <span class="b-num">6</span><span class="b-label">Bright Sub.</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#5065d0; opacity:0.7;"></div>
+        <span class="b-num">5</span><span class="b-label">Suburban</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#306cd8; opacity:0.7;"></div>
+        <span class="b-num">4</span><span class="b-label">Rural Trans.</span>
+      </div>
+      <div class="b-seg">
+        <div class="b-bar" style="background:#1870e0; opacity:0.7;"></div>
+        <span class="b-num">3</span><span class="b-label">Rural Sky</span>
+      </div>
+      <div class="b-seg pin" style="--pc:#1058c0">
+        <div class="b-bar" style="background:#1058c0;"></div>
+        <span class="b-num">2</span><span class="b-label">Dark Site</span>
+      </div>
+      <div class="b-seg pin" style="--pc:#0838a0">
+        <div class="b-bar" style="background:#0838a0;"></div>
+        <span class="b-num">1</span><span class="b-label">Pristine</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--text-dim);letter-spacing:0.07em;margin-bottom:24px;">
+      Glowing = sites confirmed on the scouting trip &nbsp;·&nbsp; 9 = Las Vegas (start) &nbsp;·&nbsp; 2 = Alabama Hills &nbsp;·&nbsp; 1 = Death Valley
+    </p>
+
+    <div class="reveal" style="margin:24px 0;">
+      <img src="uploads/pasted-1777228085693-0.png" alt="Bortle scale comparison photograph" style="width:100%;border-radius:2px;opacity:0.9;box-shadow:0 8px 44px rgba(0,0,0,0.65);">
+      <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:10px;letter-spacing:0.06em;margin-bottom:0;">Same sky. Nine different darknesses. Left = Bortle 1 (pristine). Right = Bortle 8/9 (city).</p>
+    </div>
+
+    <div class="reveal d1" style="display:flex;gap:34px;align-items:center;flex-wrap:wrap;margin-top:32px;">
+      <div style="flex:1;min-width:180px;">
+        <p>More than 80% of Americans have never seen the Milky Way from where they live. The dark zones of the American West are among the last places on the continent where truly dark sky is still accessible by car — and they're shrinking.</p>
+        <p class="dim">Students on this trip aren't just stargazing. Each night is a lab: measuring how light pollution degrades the data, limits what the instruments can detect, and narrows what the human eye can see.</p>
+      </div>
+      <div style="flex:0 0 auto;">
+        <div class="polaroid" data-rot="-2" style="width:348px;">
+          <img src="uploads/pasted-1777228041715-0.png" alt="USA at night from space" style="width:328px;height:218px;object-fit:cover;object-position:center;">
+          <div class="p-cap">USA at Night · NASA / Suomi NPP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ §4 EXPEDITION ═══════════ -->
+<section id="expedition">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">Coming March 2027</span>
+      <h2>The Student Expedition</h2>
+      <p>Honors Astronomy is a year-long course built around this expedition. In fall, students study our local solar system. Winter turns to deep-sky objects. Spring is cosmology — and by then, students have gathered the data themselves.</p>
+      <p class="dim">Along the way, they follow a Bortle gradient from the California coast through Los Angeles, into the mountains, and out to Alabama Hills and Death Valley. They visit Mount Wilson to stand where Hubble made his paradigm-shifting discoveries. They measure sky brightness at every stop. They do astrophotography in progressively darker skies. The final term is built on what they bring back: astrometry, variable stars, asteroid tracking, exoplanet data — all from their own observations in the field.</p>
+    </div>
+
+    <div class="exp-stops reveal d1">
+      <div class="exp-stop" style="--sc:#d05828; transition-delay:0.05s">
+        <div class="exp-head">
+          <span class="exp-badge">Bortle 8–9 · Night 1</span>
+          <div class="exp-name">Los Angeles · Malibu</div>
+        </div>
+        <div class="exp-desc">We start light, deliberately. First night at the ocean horizon, SQM readings begin, Griffith Observatory for context. That amber ceiling overhead — the one that blots out everything — is the baseline everything else gets measured against.</div>
+      </div>
+      <div class="exp-stop" style="--sc:#3068d8; transition-delay:0.12s">
+        <div class="exp-head">
+          <span class="exp-badge">Bortle 3–4 · Nights 2–3</span>
+          <div class="exp-name">Joshua Tree National Park</div>
+        </div>
+        <div class="exp-desc">First real Milky Way. Most students have seen photographs but never the actual sky — two nights here lets that sink in slowly. Equipment shakedown by day. Tracked imaging after dark.</div>
+      </div>
+      <div class="exp-stop" style="--sc:#9fc6ee; transition-delay:0.2s">
+        <div class="exp-head">
+          <span class="exp-badge">Bortle 2–3 · Nights 4–5</span>
+          <div class="exp-name">Alabama Hills · Lone Pine</div>
+        </div>
+        <div class="exp-desc">Confirmed dark on the scout. Two nights with Mobius Arch, the Sierra silhouette, and the Milky Way overhead. Student-led sessions — the data noticeably richer than anything from the previous week.</div>
+      </div>
+      <div class="exp-stop" style="--sc:#1058c0; transition-delay:0.28s">
+        <div class="exp-head">
+          <span class="exp-badge">Bortle 1–2 · Night 6 · Capstone</span>
+          <div class="exp-name">Death Valley National Park</div>
+        </div>
+        <div class="exp-desc">New moon, March 8, 2027. The capstone night. We scouted this site in March 2026 and can confirm: the sky is as dark as any we've seen from a paved road. Naked-eye deep-sky objects. Zodiacal light. The final SQM dataset. This is where everything comes together.</div>
+      </div>
+      <div class="exp-stop" style="--sc:#7060c0; transition-delay:0.36s; border-bottom:none;">
+        <div class="exp-head">
+          <span class="exp-badge">Bortle 5–6 · Closing Bracket</span>
+          <div class="exp-name">Mt. Wilson Observatory · Pasadena</div>
+        </div>
+        <div class="exp-desc">The 60-inch and 100-inch telescopes where Hubble proved the universe was expanding. Students end here and look back down at the LA light dome — after a week under Bortle 1 skies. That amber glow will mean something very different now.</div>
+      </div>
+    </div>
+
+    <!-- Schematic destination map -->
+    <div class="reveal d2" style="margin:36px 0;">
+      <svg viewBox="0 0 600 270" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;margin:0 auto;">
+        <defs>
+          <radialGradient id="mg1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(208,88,40,0.25)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          <radialGradient id="mg2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(48,104,216,0.22)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          <radialGradient id="mg3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(16,88,192,0.25)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          <radialGradient id="mg4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(159,198,238,0.25)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+          <radialGradient id="mg5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(112,96,192,0.22)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+        </defs>
+
+        <!-- Subtle grid -->
+        <line x1="0" y1="135" x2="600" y2="135" stroke="rgba(200,169,110,0.05)" stroke-width="1"/>
+        <line x1="300" y1="0" x2="300" y2="270" stroke="rgba(200,169,110,0.05)" stroke-width="1"/>
+
+        <!-- Tiny background stars -->
+        <circle cx="30" cy="40" r="0.8" fill="rgba(200,210,240,0.4)"/>
+        <circle cx="95" cy="22" r="1" fill="rgba(200,210,240,0.5)"/>
+        <circle cx="180" cy="55" r="0.7" fill="rgba(200,210,240,0.35)"/>
+        <circle cx="250" cy="30" r="1.1" fill="rgba(200,210,240,0.45)"/>
+        <circle cx="310" cy="18" r="0.8" fill="rgba(200,210,240,0.4)"/>
+        <circle cx="450" cy="45" r="1" fill="rgba(200,210,240,0.4)"/>
+        <circle cx="520" cy="25" r="0.7" fill="rgba(200,210,240,0.35)"/>
+        <circle cx="570" cy="60" r="0.9" fill="rgba(200,210,240,0.4)"/>
+        <circle cx="140" cy="155" r="0.8" fill="rgba(200,210,240,0.3)"/>
+        <circle cx="470" cy="160" r="1" fill="rgba(200,210,240,0.35)"/>
+        <circle cx="540" cy="175" r="0.7" fill="rgba(200,210,240,0.3)"/>
+
+        <!-- Constellation lines (trip order) -->
+        <line x1="65" y1="205" x2="340" y2="215" stroke="rgba(200,169,110,0.22)" stroke-width="0.8"/>
+        <line x1="340" y1="215" x2="195" y2="105" stroke="rgba(200,169,110,0.22)" stroke-width="0.8"/>
+        <line x1="195" y1="105" x2="390" y2="110" stroke="rgba(200,169,110,0.22)" stroke-width="0.8"/>
+        <line x1="390" y1="110" x2="130" y2="175" stroke="rgba(200,169,110,0.22)" stroke-width="0.8"/>
+        <line x1="130" y1="175" x2="65" y2="205" stroke="rgba(200,169,110,0.18)" stroke-width="0.8" stroke-dasharray="3 3"/>
+
+        <!-- 1. Malibu / LA Coast -->
+        <ellipse cx="65" cy="205" rx="28" ry="22" fill="url(#mg1)"/>
+        <circle cx="65" cy="205" r="5" fill="#d05828" opacity="0.92"/>
+        <text x="65" y="227" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="9.5" font-weight="400" letter-spacing="1" text-anchor="middle">MALIBU / LA</text>
+        <text x="65" y="238" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 8–9 · Night 1</text>
+
+        <!-- 2. Joshua Tree -->
+        <ellipse cx="340" cy="215" rx="28" ry="22" fill="url(#mg2)"/>
+        <circle cx="340" cy="215" r="5" fill="#3068d8" opacity="0.92"/>
+        <text x="340" y="237" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="9.5" font-weight="400" letter-spacing="1" text-anchor="middle">JOSHUA TREE</text>
+        <text x="340" y="248" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 3–4 · Nights 2–3</text>
+
+        <!-- 3. Alabama Hills -->
+        <ellipse cx="195" cy="105" rx="28" ry="22" fill="url(#mg4)"/>
+        <circle cx="195" cy="105" r="5" fill="#9fc6ee" opacity="0.92"/>
+        <text x="195" y="83" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="9.5" font-weight="400" letter-spacing="1" text-anchor="middle">ALABAMA HILLS</text>
+        <text x="195" y="72" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 2–3 · Nights 4–5</text>
+
+        <!-- 4. Death Valley -->
+        <ellipse cx="390" cy="110" rx="30" ry="24" fill="url(#mg3)"/>
+        <circle cx="390" cy="110" r="6" fill="#1058c0" opacity="0.95"/>
+        <circle cx="390" cy="110" r="12" fill="rgba(16,88,192,0.12)"/>
+        <text x="390" y="88" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="9.5" font-weight="500" letter-spacing="1" text-anchor="middle">DEATH VALLEY</text>
+        <text x="390" y="77" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 1–2 · Capstone · Mar 8</text>
+
+        <!-- 5. Mt Wilson -->
+        <ellipse cx="130" cy="175" rx="26" ry="20" fill="url(#mg5)"/>
+        <circle cx="130" cy="175" r="5" fill="#7060c0" opacity="0.92"/>
+        <text x="185" y="163" fill="#c8a96e" font-family="Roboto,sans-serif" font-size="9.5" font-weight="400" letter-spacing="1" text-anchor="middle">MT. WILSON</text>
+        <text x="185" y="174" fill="rgba(200,169,110,0.42)" font-family="Roboto,sans-serif" font-size="8" font-weight="300" text-anchor="middle">Bortle 5–6 · Closing</text>
+
+        <!-- Compass -->
+        <text x="574" y="256" fill="rgba(200,169,110,0.18)" font-family="Roboto,sans-serif" font-size="9" font-weight="300">N ↑</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ §5 GEAR ═══════════ -->
+<section id="gear">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="eyebrow">The Equipment</span>
+      <h2>The Gear</h2>
+      <p>The class is equipped with a set of smart telescopes — a ZWO SeeStar S30 Pro and two DwarfLabs units (a Dwarf3 and a Dwarf Mini, with more planned for next year) — alongside DSLR cameras on tracking mounts and a 360° camera for night timelapses and star trails. Modern digital astrophotography has put incredibly sensitive tools in the hands of our students.</p>
+
+      <!-- Telescope product photos row -->
+      <div class="reveal" style="display:flex;gap:10px;margin:20px 0 28px;">
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+          <img src="uploads/pasted-1777233475429-0.png" alt="ZWO SeeStar S30 Pro" style="width:100%;aspect-ratio:1;object-fit:cover;object-position:center;display:block;box-shadow:0 4px 18px rgba(0,0,0,0.6);">
+          <span style="font-size:9px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);text-align:center;">ZWO SeeStar S30 Pro</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+          <img src="uploads/pasted-1777233076075-0.png" alt="DwarfLabs Dwarf3" style="width:100%;aspect-ratio:1;object-fit:cover;object-position:center;display:block;box-shadow:0 4px 18px rgba(0,0,0,0.6);">
+          <span style="font-size:9px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);text-align:center;">DwarfLabs Dwarf3</span>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+          <img src="uploads/pasted-1777233112528-0.png" alt="DwarfLabs Dwarf Mini" style="width:100%;aspect-ratio:1;object-fit:cover;object-position:center;display:block;box-shadow:0 4px 18px rgba(0,0,0,0.6);">
+          <span style="font-size:9px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);text-align:center;">DwarfLabs Dwarf Mini</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gear-grid reveal d1">
+      <div class="gear-card">
+        <div class="gear-title">Smart Telescopes</div>
+        <p>ZWO SeeStar S30 Pro, DwarfLabs Dwarf3, Dwarf Mini. Each unit is camera, mount, GPS, and processor in one backpack-sized instrument. Setup: under three minutes, no alignment required.</p>
+      </div>
+      <div class="gear-card">
+        <div class="gear-title">Real-time deep sky</div>
+        <p>A galaxy that required hours of darkroom exposure in 1967 appears on a student's phone inside five minutes — live, stacking in real time as the sky gets darker.</p>
+      </div>
+      <div class="gear-card">
+        <div class="gear-title">DSLRs + 360° Camera</div>
+        <p>Tracked DSLR mounts for long-exposure astrophotography alongside a 360° camera capturing full-dome timelapses and star trail sequences at each site.</p>
+      </div>
+      <div class="gear-card">
+        <div class="gear-title">Sky Quality Meters</div>
+        <p>Handheld SQMs at every site produce a calibrated dataset from Bortle 9 to Bortle 1. The signal-to-noise degradation as Bortle rises is visible in the numbers, quantitative and lab-ready.</p>
+      </div>
+    </div>
+
+    <div class="photo-cluster reveal d2" style="flex-wrap:nowrap;">
+      <div class="polaroid" data-rot="3.5" style="width:200px;">
+        <img src="uploads/IMG_5889.JPG" alt="Red-light observatory" style="width:180px;height:180px;object-fit:cover;object-position:center;">
+        <div class="p-cap">Observatory Visit · Red Light Protocol</div>
+      </div>
+      <div class="polaroid" data-rot="-2" style="width:200px;">
+        <img src="uploads/IMG_5737.JPG" alt="Smart telescopes deployed at site" style="width:180px;height:180px;object-fit:cover;object-position:center;">
+        <div class="p-cap">Telescopes in the Field</div>
+      </div>
+      <div class="polaroid" data-rot="-1.5" style="width:200px;">
+        <img src="uploads/IMG_6351.JPG" alt="Telescopes on Pomfret campus" style="width:180px;height:180px;object-fit:cover;object-position:center;">
+        <div class="p-cap">Pomfret Campus · Pre-Trip Training</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ §6 GALLERY ═══════════ -->
+<section id="gallery">
+  <div class="section-inner" style="max-width:900px;">
+    <div class="reveal">
+      <span class="eyebrow">From the Road</span>
+      <h2>Dark Skies Photo Gallery</h2>
+    </div>
+    <div class="gallery-scatter reveal d1">
+      <div class="polaroid" data-rot="3" style="width:216px;">
+        <img src="uploads/pasted-1777228343860-0.png" alt="Students under the stars" style="width:196px;height:240px;object-fit:cover;object-position:center 65%;">
+        <div class="p-cap">Lake Family · Under Dark Skies</div>
+      </div>
+      <div class="polaroid" data-rot="-4" style="width:236px;">
+        <img src="uploads/20260312-201025.JPG" alt="Star trails over Lone Pine" style="width:216px;height:216px;object-fit:cover;object-position:center 88%;">
+        <div class="p-cap">Lone Pine · 10-min Star Trails · Bortle 2</div>
+      </div>
+      <div class="polaroid" data-rot="-1.5" style="width:256px;">
+        <img src="uploads/pasted-1777231827897-0.png" alt="Alabama Hills rock formations under stars" style="width:236px;height:236px;object-fit:cover;object-position:center 40%;">
+        <div class="p-cap">Alabama Hills · Rock Formations · Bortle 2</div>
+      </div>
+      <div class="polaroid" data-rot="-1.5" style="width:256px;">
+        <img src="uploads/pasted-1777228217583-0.png" alt="Annotated night sky over Alabama Hills" style="width:236px;height:236px;object-fit:cover;object-position:center 15%;">
+        <div class="p-cap">Alabama Hills · Annotated Sky · Bortle 2</div>
+      </div>
+      <div class="polaroid" data-rot="2" style="width:226px;">
+        <img src="uploads/IMG_77A5025138A6-1.jpeg" alt="Circular star trails from Pomfret campus" style="width:206px;height:206px;object-fit:cover;object-position:center;">
+        <div class="p-cap">Pomfret Campus · Polar Star Trails · 142 min</div>
+      </div>
+      <div class="polaroid" data-rot="-3" style="width:226px;">
+        <img src="uploads/IMG_21177B3FBD4C-1.jpeg" alt="Star trails over tree silhouette" style="width:206px;height:206px;object-fit:cover;object-position:center;">
+        <div class="p-cap">Alabama Hills · Star Trails · 67 min</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ §7 CLOSING ═══════════ -->
+<section id="closing" style="background-image:url('uploads/pasted-1777228279727-0.png');">
+  <!-- Handwritten thank you -->
+  <div class="reveal" style="position:absolute;top:55px;left:62px;z-index:2;transform:rotate(-11deg);transform-origin:left top;pointer-events:none;">
+    <span style="font-family:'Dancing Script',cursive;font-size:92px;font-weight:700;color:rgba(218,198,158,0.88);line-height:1;display:block;text-shadow:0 2px 28px rgba(0,0,0,0.55);">Thank you!</span>
+  </div>
+  <div class="section-inner" style="text-align:center;">
+    <div class="reveal">
+      <img src="uploads/pasted-1777230838688-0.png" style="width:62px;margin:0 auto 22px;display:block;opacity:0.82;">
+      <span class="eyebrow" style="text-align:center;display:block;">Pomfret School · Honors Astronomy</span>
+      <p class="closing-quote">"The scouting trip was a complete success! In March 2027, the Honors and Advanced Astronomy students will have an unforgettable experience."</p>
+      <hr class="rule" style="max-width:180px;margin:28px auto;">
+      <p class="closing-sub">Dark Skies of California · March 2027</p>
+      <p style="font-size:13px;color:var(--text-dim);margin-top:6px;">10–12 Students · Grades 10–12 · Pomfret School</p>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ────────────────────────────────────────
+   STARS CANVAS
+──────────────────────────────────────── */
+(function() {
+  const canvas = document.getElementById('starCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+  const N = 760;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function init() {
+    stars = [];
+    for (let i = 0; i < N; i++) {
+      const bright = Math.random();
+      const warm = Math.random() < 0.12;
+      stars.push({
+        x: Math.random(), y: Math.random(),
+        size: bright < 0.04 ? 2.1 : bright < 0.18 ? 1.5 : bright < 0.5 ? 1.0 : 0.65,
+        revealAt: 0.04 + Math.pow(Math.random(), 0.9) * 0.86,
+        maxAlpha: 0.42 + Math.random() * 0.58,
+        tp: Math.random() * Math.PI * 2,
+        ts: 0.35 + Math.random() * 1.1,
+        r: warm ? 255 : 210 + Math.floor(Math.random() * 45),
+        g: warm ? 220 + Math.floor(Math.random() * 20) : 218 + Math.floor(Math.random() * 32),
+        b: warm ? 180 + Math.floor(Math.random() * 30) : 235 + Math.floor(Math.random() * 20),
+      });
+    }
+  }
+
+  let progress = 0;
+  window._setStarProgress = function(p) { progress = p; };
+
+  function draw(ms) {
+    ctx.clearRect(0, 0, W, H);
+    const t = ms / 1000;
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      if (progress < s.revealAt) continue;
+      const fade = Math.min(1, (progress - s.revealAt) / 0.055);
+      const twinkle = 0.7 + 0.3 * Math.sin(t * s.ts + s.tp);
+      const a = s.maxAlpha * fade * twinkle;
+      ctx.beginPath();
+      ctx.arc(s.x * W, s.y * H, s.size, 0, 6.2832);
+      ctx.fillStyle = `rgba(${s.r},${s.g},${s.b},${a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  init();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
+})();
+
+/* ────────────────────────────────────────
+   SCROLL → BACKGROUND + STARS + HORIZON
+──────────────────────────────────────── */
+const BG = [
+  [0,    58, 18,  8],   // dark burnt red — mountain base
+  [0.05, 68, 26, 14],   // warm embers
+  [0.11, 50, 22, 40],   // dusky purple
+  [0.20, 26, 28, 64],   // twilight blue
+  [0.32, 14, 20, 48],
+  [0.48,  8, 12, 32],
+  [0.65,  4,  7, 20],
+  [0.82,  2,  4, 12],
+  [1.00,  1,  1,  5],
+];
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function bgAt(p) {
+  for (let i = 0; i < BG.length - 1; i++) {
+    const a = BG[i], b = BG[i+1];
+    if (p <= b[0]) {
+      const t = (p - a[0]) / (b[0] - a[0]);
+      return `rgb(${Math.round(lerp(a[1],b[1],t))},${Math.round(lerp(a[2],b[2],t))},${Math.round(lerp(a[3],b[3],t))})`;
+    }
+  }
+  return 'rgb(1,1,5)';
+}
+
+const horizonGlow = document.getElementById('horizonGlow');
+const sectionEls = Array.from(document.querySelectorAll('section'));
+const navDots = Array.from(document.querySelectorAll('.navdot'));
+
+function onScroll() {
+  const sy = window.scrollY;
+  const maxS = document.documentElement.scrollHeight - window.innerHeight;
+  const p = maxS > 0 ? Math.min(1, sy / maxS) : 0;
+
+  document.body.style.backgroundColor = bgAt(p);
+  window._setStarProgress(p);
+  horizonGlow.style.opacity = String(Math.max(0, 1 - p * 9));
+  document.getElementById('heroSky').style.opacity = String(Math.max(0, 1 - p * 9));
+
+  let active = 0;
+  sectionEls.forEach((s, i) => {
+    if (s.getBoundingClientRect().top <= window.innerHeight * 0.55) active = i;
+  });
+  navDots.forEach((d, i) => d.classList.toggle('active', i === active));
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ────────────────────────────────────────
+   INTERSECTION OBSERVERS
+──────────────────────────────────────── */
+// .reveal elements
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+  });
+}, { threshold: 0.10 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+// Polaroid develop — staggered; random order for gallery
+const polObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const parent = e.target.closest('.photo-cluster,.gallery-scatter');
+    const isGallery = e.target.closest('.gallery-scatter') !== null;
+    let delay;
+    if (isGallery) {
+      delay = Math.random() * 2200; // random 0–2.2s for gallery
+    } else {
+      const idx = parent ? Array.from(parent.querySelectorAll('.polaroid')).indexOf(e.target) : 0;
+      delay = idx * 500;
+    }
+    setTimeout(() => {
+      e.target.classList.add('revealed');
+    }, delay);
+    polObs.unobserve(e.target);
+  });
+}, { threshold: 0.18 });
+document.querySelectorAll('.polaroid').forEach(el => polObs.observe(el));
+
+// Stop / exp-stop list items
+const stopObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('show'); stopObs.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.stop-item,.exp-stop').forEach(el => stopObs.observe(el));
+
+// Route map path draw
+const routeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.getElementById('routePath').classList.add('drawn');
+      routeObs.disconnect();
+    }
+  });
+}, { threshold: 0.25 });
+const rsvg = document.getElementById('routeSvg');
+if (rsvg) routeObs.observe(rsvg);
+
+/* ────────────────────────────────────────
+   POLAROID TILT + DYNAMIC GLARE
+──────────────────────────────────────── */
+document.querySelectorAll('.polaroid').forEach(card => {
+  const base = parseFloat(card.dataset.rot || '0');
+  card.style.transform = `rotate(${base}deg)`;
+  card.style.cursor = 'zoom-in';
+
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+    const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+    card.style.transform = `rotate(${base}deg) perspective(680px) rotateY(${dx*9}deg) rotateX(${-dy*9}deg) scale(1.04)`;
+    card.style.transition = 'transform 0.08s linear, box-shadow 0.3s ease';
+    card.style.setProperty('--gx', ((dx+1)/2*100).toFixed(0)+'%');
+    card.style.setProperty('--gy', ((dy+1)/2*100).toFixed(0)+'%');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = `rotate(${base}deg)`;
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.35s ease';
+  });
+  card.addEventListener('click', () => openLightbox(card));
+});
+
+/* ────────────────────────────────────────
+   LIGHTBOX
+──────────────────────────────────────── */
+const lightbox = document.createElement('div');
+lightbox.id = 'lightbox';
+lightbox.innerHTML = '<div id="lightbox-inner"></div>';
+document.body.appendChild(lightbox);
+
+const lbInner = lightbox.querySelector('#lightbox-inner');
+
+function openLightbox(card) {
+  const img = card.querySelector('img');
+  const cap = card.querySelector('.p-cap');
+
+  // Scale the photo up to at most 80vh / 80vw
+  const naturalW = img.naturalWidth || img.offsetWidth;
+  const naturalH = img.naturalHeight || img.offsetHeight;
+  const maxW = Math.min(window.innerWidth * 0.80, 900);
+  const maxH = window.innerHeight * 0.80;
+  const scale = Math.min(maxW / naturalW, maxH / naturalH, 1);
+  const dispW = Math.round(naturalW * scale);
+  const dispH = Math.round(naturalH * scale);
+
+  lbInner.innerHTML = `
+    <div class="polaroid" style="width:${dispW + 20}px;transform:rotate(0deg);">
+      <img src="${img.src}" style="width:${dispW}px;height:${dispH}px;object-fit:cover;object-position:${img.style.objectPosition || 'center'};display:block;">
+      ${cap ? `<div class="p-cap">${cap.innerHTML}</div>` : ''}
+    </div>`;
+
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+</body>
+</html>
