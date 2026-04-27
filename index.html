@@ -381,6 +381,41 @@ p.lead { font-size: 19px; line-height: 1.65; }
   #sidenav { left: 13px; }
   .gear-grid { grid-template-columns: 1fr; }
   #gallery { padding: 60px 18px; }
+
+  /* Hero: stack text above photo */
+  #welcome .section-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 28px !important;
+  }
+  #welcome .section-inner > div:first-child {
+    flex: none !important;
+    width: 100%;
+  }
+  #welcome .section-inner > div:last-child {
+    flex: none !important;
+    width: 100%;
+    display: flex !important;
+    justify-content: center !important;
+    padding: 0 !important;
+  }
+  #welcome .section-inner > div:last-child .polaroid {
+    zoom: 0.76;
+  }
+
+  /* Gear cluster: allow wrapping */
+  #gear .photo-cluster {
+    flex-wrap: wrap !important;
+  }
+
+  /* Closing "Thank you!": shrink and reposition */
+  #closing .reveal[style*="rotate(-11deg)"] {
+    top: 18px !important;
+    left: 18px !important;
+  }
+  #closing .reveal[style*="rotate(-11deg)"] span {
+    font-size: 46px !important;
+  }
 }
 
 /* ── LIGHTBOX ── */
